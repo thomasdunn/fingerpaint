@@ -1,0 +1,28 @@
+{
+  "name": "fingerpaint",
+  "version": "0.0.0",
+  "authors": [
+    "thomasdunn <thomas.dunn@gmail.com>"
+  ],
+  "description": "touch painting",
+  "main": "index.html",
+  "keywords": [
+    "touch",
+    "drawing",
+    "painting",
+    "html5",
+    "canvas"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "hammer.js": "~2.0.4"
+  }
+}
