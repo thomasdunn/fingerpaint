@@ -35,6 +35,12 @@ mc.get('pan').set({
     threshold: 1
 });
 
+$('.brush').on('click', function() {
+    radius = $(this).data('radius');
+    $('.brush').removeClass('selected');
+    $(this).addClass('selected');
+});
+
 $("#picker").spectrum({
     change: function(color) {
     context.fillStyle = color.toHexString();

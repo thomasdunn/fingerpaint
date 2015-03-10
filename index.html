@@ -14,9 +14,20 @@
 </head>
 
 <body>
-  <div id="picker"></div>
+  <div id="controls">
+    <div id="picker"></div>
+    <div id="brushes">
+      <div class="brush" data-radius="1"><div class="brush-1"></div></div>
+      <div class="brush" data-radius="3"><div class="brush-2"></div></div>
+      <div class="brush" data-radius="9"><div class="brush-3"></div></div>
+      <div class="brush selected" data-radius="15"><div class="brush-4"></div></div>
+      <div class="brush" data-radius="30"><div class="brush-5"></div></div>
+      <div class="brush" data-radius="60"><div class="brush-6"></div></div>
+      <div class="brush" data-radius="120"><div class="brush-7"></div></div>
+      <div class="brush" data-radius="240"><div class="brush-8"></div></div>
+    </div>
+  </div>
   <canvas id="canvas"></canvas>
-
   <script src="index.js"></script>
 </body>
 </html>
