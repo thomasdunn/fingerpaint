@@ -4,3 +4,12 @@ html, body {
   margin: 0px;
   overflow: hidden;
 }
+
+#picker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 350px;
+  height: 325px;
+  background: red;
+}

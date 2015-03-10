@@ -23,6 +23,7 @@
     "tests"
   ],
   "dependencies": {
-    "hammer.js": "~2.0.4"
+    "hammer.js": "~2.0.4",
+    "spectrum": "~1.6.1"
   }
 }
