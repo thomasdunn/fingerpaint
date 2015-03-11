@@ -63,6 +63,10 @@ $("#picker").spectrum({
 $('#picker').show();
 $('#picker').on(function() { $('#picker').hide(); })
 
+window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
+   e.preventDefault();
+}, false);
+
 // This library is to remove the 300ms touch browser click delay
 // doesn't seem to be an issue so not currently using it
 // $(function() {
