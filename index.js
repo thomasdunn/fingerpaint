@@ -117,5 +117,6 @@
 })().init();
 
 // Notes:
-// use filer.js to use FileSystem API to write images to disk
-
+// PouchDB for cross browser persistence with ability to sync to server
+//   http://pouchdb.com/getting-started.html
+//   http://pouchdb.com/api.html#save_attachment
