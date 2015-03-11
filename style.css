@@ -5,6 +5,16 @@ html, body {
   overflow: hidden;
 }
 
+/* disable ui element selections */
+body{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 #picker {
   position: absolute;
   left: 0;
@@ -45,8 +55,8 @@ div.brush:nth-child(5n) {
 	-moz-border-radius: 1px;
 	-webkit-border-radius: 1px;
 	border-radius: 1px;
-	margin-left: 25px;
-	margin-top: 25px;
+	margin-left: 34px;
+	margin-top: 34px;
 }
 
 .brush-2 {
@@ -56,8 +66,8 @@ div.brush:nth-child(5n) {
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
 	border-radius: 2px;
-	margin-left: 23px;
-	margin-top: 23px;
+	margin-left: 33px;
+	margin-top: 33px;
 }
 
 .brush-3 {
@@ -67,8 +77,8 @@ div.brush:nth-child(5n) {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
-	margin-left: 22px;
-	margin-top: 22px;
+	margin-left: 32px;
+	margin-top: 32px;
 }
 
 .brush-4 {
@@ -78,8 +88,8 @@ div.brush:nth-child(5n) {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	margin-left: 20px;
-	margin-top: 20px;
+	margin-left: 30px;
+	margin-top: 30px;
 }
 
 .brush-5 {
@@ -89,8 +99,8 @@ div.brush:nth-child(5n) {
 	-moz-border-radius: 9px;
 	-webkit-border-radius: 9px;
 	border-radius: 9px;
-	margin-left: 16px;
-	margin-top: 16px;
+	margin-left: 26px;
+	margin-top: 26px;
 }
 
 .brush-6 {
@@ -100,8 +110,8 @@ div.brush:nth-child(5n) {
 	-moz-border-radius: 13px;
 	-webkit-border-radius: 13px;
 	border-radius: 13px;
-	margin-left: 12px;
-	margin-top: 12px;
+	margin-left: 22px;
+	margin-top: 22px;
 }
 
 .brush-7 {
@@ -111,8 +121,8 @@ div.brush:nth-child(5n) {
 	-moz-border-radius: 19px;
 	-webkit-border-radius: 19px;
 	border-radius: 19px;
-	margin-left: 6px;
-	margin-top: 6px;
+	margin-left: 16px;
+	margin-top: 16px;
 }
 
 .brush-8 {
@@ -122,6 +132,6 @@ div.brush:nth-child(5n) {
 	-moz-border-radius: 25px;
 	-webkit-border-radius: 25px;
 	border-radius: 25px;
-	margin-left: 5px;
-	margin-top: 5px;
+	margin-left: 10px;
+	margin-top: 10px;
 }

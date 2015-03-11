@@ -63,9 +63,14 @@ $("#picker").spectrum({
 $('#picker').show();
 $('#picker').on(function() { $('#picker').hide(); })
 
+// disable context menu, often would appear after accidental 2nd finger touch
 window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
-   e.preventDefault();
+  e.preventDefault();
 }, false);
+
+// Chrome: to disable right-swipe back browser, left-swipe forward browser
+// set overscroll-history-navigation=disabled
+// chrome://flags/#overscroll-history-navigation
 
 // This library is to remove the 300ms touch browser click delay
 // doesn't seem to be an issue so not currently using it
@@ -78,3 +83,7 @@ function drawCircle(x, y) {
     context.arc(x, y, radius, 0, 2 * Math.PI, false);
     context.fill(); 
 }
+
+// Notes:
+// use filer.js to use FileSystem API to write images to disk
+
