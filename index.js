@@ -38,7 +38,7 @@
             // prevent the source event from doing it's native behavior
             // this may help disable gestures such as browser back
             e.preventDefault();
-        	
+
         	e.pointers.forEach(function(pointer) {
         	    drawCircle(pointer.pageX, pointer.pageY);
         	});
@@ -51,7 +51,9 @@
             // make it respond to drag and start drawing immediately
             // makes it more responsive, but may lead to more random spots
             // due to a different finger accidentally touching?
-            threshold: 1
+            threshold: 1,
+            // all your fingers
+            pointers: 0
         });
     
         // disable context menu, often would appear after accidental 2nd finger touch
