@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Fingerpaint</title>
+  
+  <link href="style.css" rel="stylesheet" type="text/css">
+  <link href="spectrum.css" rel="stylesheet" type="text/css">
+  <script src="bower_components/fastclick/lib/fastclick.js"></script>
+  <script src="bower_components/hammer.js/hammer.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/spectrum/spectrum.js"></script>
+</head>
+
+<body>
+  <div id="controls">
+    <div id="picker"></div>
+    <div id="brushes">
+      <div class="brush" data-radius="1"><div class="brush-1"></div></div>
+      <div class="brush" data-radius="3"><div class="brush-2"></div></div>
+      <div class="brush" data-radius="9"><div class="brush-3"></div></div>
+      <div class="brush selected" data-radius="15"><div class="brush-4"></div></div>
+      <div class="brush" data-radius="30"><div class="brush-5"></div></div>
+      <div class="brush" data-radius="60"><div class="brush-6"></div></div>
+      <div class="brush" data-radius="120"><div class="brush-7"></div></div>
+      <div class="brush" data-radius="240"><div class="brush-8"></div></div>
+    </div>
+  </div>
+  <canvas id="canvas"></canvas>
+  <script src="index.js"></script>
+</body>
+</html>
