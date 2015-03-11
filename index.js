@@ -5,6 +5,8 @@
         context,
         radius = 15,
         color,
+        lastX,
+        lastY,
         app = {
             'init': init
         };
@@ -24,6 +26,8 @@
         
         canvas.width  = window.innerWidth;
         canvas.height = window.innerHeight;
+
+        context.lineCap = 'round';
     }
     
     function initTouch() {
@@ -39,9 +43,39 @@
             // this may help disable gestures such as browser back
             e.preventDefault();
 
-        	e.pointers.forEach(function(pointer) {
-        	    drawCircle(pointer.pageX, pointer.pageY);
-        	});
+        // 	e.pointers.forEach(function(pointer) {
+        // 	    drawCircle(pointer.pageX, pointer.pageY);
+        // 	    lastX = pointer.pageX;
+        // 	    lastY = pointer.pageY;
+        // 	});
+        	
+        	if (e.pointers.length === 1) {
+        	    if (lastX === undefined) {
+        	        lastX = e.pointers[0].pageX;
+        	    }
+        	    if (lastY === undefined) {
+        	        lastY = e.pointers[0].pageY;
+        	    }
+        	    
+        	    if (e.isFirst) {
+                    context.beginPath();
+                    context.moveTo(lastX, lastY);
+        	    }
+        	    
+                context.lineTo(e.pointers[0].pageX, e.pointers[0].pageY);
+                context.lineWidth = radius * 2;
+                context.stroke();
+        	    
+                if (e.isFinal) {
+                    lastX = undefined;
+                    lastY = undefined;
+                    context.closePath();
+                }
+                else {
+                    lastX = e.pointers[0].pageX;
+                    lastY = e.pointers[0].pageY;
+                }
+        	}
         });
         
         mc.get('pan').set({
@@ -106,7 +140,9 @@
     //-----------Drawing functions 
     
     function changeColor(color) {
-        context.fillStyle = color.toHexString();
+        context.fillStyle = 
+            context.strokeStyle = 
+                color.toHexString();
     }
     
     function drawCircle(x, y) {
