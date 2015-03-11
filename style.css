@@ -20,26 +20,32 @@ body{
   left: 0;
   top: 0;
   width: 350px;
-  height: 525px;
+  height: 494px;
   background: #ECECEC;
+  -moz-border-bottom-right-radius: 25px;
+	-webkit-border-bottom-right-radius: 25px;
+	border-bottom-right-radius: 25px;
+	opacity: 0.5;
 }
 
 #brushes {
   position: absolute;
-  padding-top: 365px;
+  padding-top: 330px;
   padding-left: 31px;
 }
 
 .brush {
   width: 61px;
   height: 61px;
-  padding-right: 10px;
-  padding-bottom: 10px;
+  padding-right: 9px;
+  padding-bottom: 9px;
   float: left;
+  border: 1px solid transparent;
 }
 
 .brush.selected {
   background: #BCBCBC;
+  border: 1px solid orange;
 }
 
 div.brush:nth-child(5n) {
@@ -58,6 +64,7 @@ div.brush:nth-child(5n) {
 	margin-left: 34px;
 	margin-top: 34px;
 }
+
 
 .brush-2 {
   width: 4px;
@@ -135,3 +142,4 @@ div.brush:nth-child(5n) {
 	margin-left: 10px;
 	margin-top: 10px;
 }
+

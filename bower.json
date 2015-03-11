@@ -24,6 +24,6 @@
   ],
   "dependencies": {
     "hammer.js": "~2.0.4",
-    "spectrum": "~1.6.1"
+    "spectrum": "git://github.com/thomasdunn/spectrum.git#bdb8789e19"
   }
 }

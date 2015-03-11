@@ -42,15 +42,14 @@ $('.brush').on('click', function() {
 });
 
 $("#picker").spectrum({
-    change: function(color) {
-    context.fillStyle = color.toHexString();
-},
+    change: changeColor,
+    clickoutFiresChange: true, // keep selected color when change brush
     showPaletteOnly: true,
     showPalette:true,
     flat: true,
+    color: "#000",
     palette: [
-        ["#000"],
-        ["#111","#444","#666","#999","#ccc","#eee","#f3f3f3","#fff"],
+        ["#000","#444","#666","#999","#ccc","#eee","#f3f3f3","#fff"],
         ["#f00","#f90","#ff0","#0f0","#0ff","#00f","#90f","#f0f"],
         ["#f4cccc","#fce5cd","#fff2cc","#d9ead3","#d0e0e3","#cfe2f3","#d9d2e9","#ead1dc"],
         ["#ea9999","#f9cb9c","#ffe599","#b6d7a8","#a2c4c9","#9fc5e8","#b4a7d6","#d5a6bd"],
@@ -60,8 +59,13 @@ $("#picker").spectrum({
         ["#600","#783f04","#7f6000","#274e13","#0c343d","#073763","#20124d","#4c1130"]
     ]
 });
+
 $('#picker').show();
 $('#picker').on(function() { $('#picker').hide(); })
+
+function changeColor(color) {
+    context.fillStyle = color.toHexString();
+}
 
 // disable context menu, often would appear after accidental 2nd finger touch
 window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
