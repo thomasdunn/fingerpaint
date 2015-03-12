@@ -1,4 +1,4 @@
-/* global Hammer */
+/* global Hammer, FastClick */
 
 (function() {
     var canvas,
@@ -100,10 +100,9 @@
         // chrome://flags/#overscroll-history-navigation
     
         // This library is to remove the 300ms touch browser click delay
-        // doesn't seem to be an issue so not currently using it
-        // $(function() {
-        //     FastClick.attach(document.body);
-        // });
+        $(function() {
+          FastClick.attach(document.body);
+        });
     }
     
     function initBrushPicker() {
