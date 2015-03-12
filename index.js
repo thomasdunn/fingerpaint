@@ -30,13 +30,15 @@
     }
     
     function initTouch() {
-        var mc = new Hammer(canvas, { });
+        var mc = new Hammer(document.getElementsByTagName('body')[0], { });
 
         mc.on("tap", function(e) {
             console.log('event type: ' + e.type);
             
             // prevent the source event from doing it's native behavior
-            e.preventDefault();
+            // * commenting out for now to allow painting on top of
+            //   the control panel
+            // e.preventDefault();
 
         	e.pointers.forEach(function(pointer) {
         	    drawCircle(pointer.pageX, pointer.pageY);
@@ -46,7 +48,7 @@
         mc.on("panstart panend", function(e) {
             console.log('event type: ' + e.type);
             
-            e.preventDefault();
+            // e.preventDefault();
 
         	e.pointers.forEach(function(pointer, index) {
                 if (e.type === "panend") {
@@ -59,7 +61,7 @@
         mc.on("panleft panright panup pandown", function(e) {
             console.log('event type: ' + e.type);
             
-            e.preventDefault();
+            // e.preventDefault();
 
         	e.pointers.forEach(function(pointer, index) {
                 var pos = pointerPositions[pointer.identifier];
