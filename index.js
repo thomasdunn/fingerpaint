@@ -27,7 +27,7 @@
         canvas.width  = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        context.lineCap = 'round';
+        context.lineCap = context.lineJoin = 'round';
     }
     
     function initTouch() {
@@ -37,39 +37,39 @@
             // this may help disable gestures such as browser back
             preventDefault: true
         });
-        
-        mc.on("tap panleft panright panup pandown", function(e) {
+
+        mc.on("tap", function(e) {
             // prevent the source event from doing it's native behavior
             // this may help disable gestures such as browser back
             e.preventDefault();
 
-        // 	e.pointers.forEach(function(pointer) {
-        // 	    drawCircle(pointer.pageX, pointer.pageY);
-        // 	    lastX = pointer.pageX;
-        // 	    lastY = pointer.pageY;
-        // 	});
-        	
+        	e.pointers.forEach(function(pointer) {
+        	    drawCircle(pointer.pageX, pointer.pageY);
+        	});
+        });
+        
+        mc.on("panleft panright panup pandown panstart panend", function(e) {
+            console.log('event type: ' + e.type);
+            
+            // prevent the source event from doing it's native behavior
+            // this may help disable gestures such as browser back
+            e.preventDefault();
+
         	if (e.pointers.length === 1) {
         	    if (lastX === undefined) {
         	        lastX = e.pointers[0].pageX;
-        	    }
-        	    if (lastY === undefined) {
         	        lastY = e.pointers[0].pageY;
-        	    }
-        	    
-        	    if (e.isFirst) {
                     context.beginPath();
                     context.moveTo(lastX, lastY);
         	    }
-        	    
+
                 context.lineTo(e.pointers[0].pageX, e.pointers[0].pageY);
                 context.lineWidth = radius * 2;
                 context.stroke();
         	    
-                if (e.isFinal) {
+                if (e.type === "panend") {
                     lastX = undefined;
                     lastY = undefined;
-                    context.closePath();
                 }
                 else {
                     lastX = e.pointers[0].pageX;
