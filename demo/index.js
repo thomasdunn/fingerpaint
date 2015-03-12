@@ -5,6 +5,7 @@
         context,
         radius = 15,
         color,
+        pointerPositions = [],
         app = {
             'init': init
         };
@@ -24,23 +25,58 @@
         
         canvas.width  = window.innerWidth;
         canvas.height = window.innerHeight;
+
+        context.lineCap = context.lineJoin = 'round';
     }
     
     function initTouch() {
-        var mc = new Hammer(canvas, {
-            dragMinDistance: 1,
+        var mc = new Hammer(document.getElementsByTagName('body')[0], { });
+
+        mc.on("tap", function(e) {
+            console.log('event type: ' + e.type);
+            
             // prevent the source event from doing it's native behavior
-            // this may help disable gestures such as browser back
-            preventDefault: true
-        });
-        
-        mc.on("tap panleft panright panup pandown", function(e) {
-            // prevent the source event from doing it's native behavior
-            // this may help disable gestures such as browser back
-            e.preventDefault();
+            // * commenting out for now to allow painting on top of
+            //   the control panel
+            // e.preventDefault();
 
         	e.pointers.forEach(function(pointer) {
         	    drawCircle(pointer.pageX, pointer.pageY);
+        	});
+        });
+        
+        mc.on("panstart panend", function(e) {
+            console.log('event type: ' + e.type);
+            
+            // e.preventDefault();
+
+        	e.pointers.forEach(function(pointer, index) {
+                if (e.type === "panend") {
+                    drawCircle(pointer.pageX, pointer.pageY);
+                    pointerPositions[pointer.identifier] = undefined;
+                }
+        	});
+        });
+
+        mc.on("panleft panright panup pandown", function(e) {
+            console.log('event type: ' + e.type);
+            
+            // e.preventDefault();
+
+        	e.pointers.forEach(function(pointer, index) {
+                var pos = pointerPositions[pointer.identifier];
+        	    if (pos === undefined) {
+        	        pos = {
+        	            lastX: pointer.pageX,
+            	        lastY: pointer.pageY
+        	        };
+        	        pointerPositions[pointer.identifier] = pos;
+        	    }
+        	    
+        	    drawLine(pos.lastX, pos.lastY, pointer.pageX, pointer.pageY);
+        	    
+                pos.lastX = pointer.pageX;
+                pos.lastY = pointer.pageY;
         	});
         });
         
@@ -49,13 +85,18 @@
             // blocks the vertical scrolling on a touch-device while on the element
             direction: Hammer.DIRECTION_ALL,
             // make it respond to drag and start drawing immediately
-            // makes it more responsive, but may lead to more random spots
-            // due to a different finger accidentally touching?
-            threshold: 1,
-            // all your fingers
+            threshold: 0,
+            // all your fingers!
             pointers: 0
         });
     
+        mc.get('tap').set({
+            // allow this many pixel movement during gesture
+            threshold: 10,
+            // allow consecutive taps to be very far apart
+            posThreshold: 19200
+        });
+        
         // disable context menu, often would appear after accidental 2nd finger touch
         window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
           e.preventDefault();
@@ -105,7 +146,9 @@
     //-----------Drawing functions 
     
     function changeColor(color) {
-        context.fillStyle = color.toHexString();
+        context.fillStyle = 
+            context.strokeStyle = 
+                color.toHexString();
     }
     
     function drawCircle(x, y) {
@@ -113,9 +156,21 @@
         context.arc(x, y, radius, 0, 2 * Math.PI, false);
         context.fill(); 
     }
+    
+    function drawLine(x1, y1, x2, y2) {
+        context.beginPath();
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
+        context.lineWidth = radius * 2;
+        context.stroke();
+    }
+
 })().init();
 
 // Notes:
 // PouchDB for cross browser persistence with ability to sync to server
 //   http://pouchdb.com/getting-started.html
 //   http://pouchdb.com/api.html#save_attachment
+
+// TODO:
+//   Set content scalable meta for mobile
