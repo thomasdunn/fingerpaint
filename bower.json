@@ -25,6 +25,10 @@
   "dependencies": {
     "hammer.js": "~2.0.4",
     "spectrum": "git://github.com/thomasdunn/spectrum.git#bdb8789e19",
-    "fastclick": "~1.0.6"
+    "fastclick": "~1.0.6",
+    "pouchdb": "~3.3.1",
+    "blob-util": "~1.1.1",
+    "components-font-awesome": "~4.3.0",
+    "pure": "~0.6.0"
   }
 }

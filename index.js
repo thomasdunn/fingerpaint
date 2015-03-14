@@ -1,11 +1,12 @@
-/* global Hammer, FastClick */
+/* global Hammer, FastClick, PouchDB, blobUtil */
 
 (function() {
     var canvas,
         context,
         radius = 15,
-        color,
         pointerPositions = [],
+        db = new PouchDB('fingerpaint'),
+        debug = false,
         app = {
             'init': init
         };
@@ -17,6 +18,9 @@
         initTouch();
         initBrushPicker();
         initColorPicker();
+        initActions();
+        
+        PouchDB.debug.enable('*');
     }
     
     function initCanvas() {
@@ -33,7 +37,7 @@
         var mc = new Hammer(canvas, { });
 
         mc.on("tap", function(e) {
-            console.log('event type: ' + e.type);
+            log('event type: ' + e.type);
             
             // prevent the source event from doing it's native behavior
             e.preventDefault();
@@ -44,7 +48,7 @@
         });
         
         mc.on("panstart panend", function(e) {
-            console.log('event type: ' + e.type);
+            log('event type: ' + e.type);
             
             e.preventDefault();
 
@@ -57,7 +61,7 @@
         });
 
         mc.on("panleft panright panup pandown", function(e) {
-            console.log('event type: ' + e.type);
+            log('event type: ' + e.type);
             
             e.preventDefault();
 
@@ -113,6 +117,7 @@
     function initBrushPicker() {
         $('.brush').on('click', function() {
             radius = $(this).data('radius');
+            log('Brush size: ' + radius);
             $('.brush').removeClass('selected');
             $(this).addClass('selected');
         });
@@ -141,6 +146,12 @@
         $('#picker').show();
     }
     
+    function initActions() {
+        $('#save').on('click', function() {
+           saveCanvasImage();
+        });
+    }
+    
     //-----------Drawing functions 
     
     function changeColor(color) {
@@ -162,13 +173,52 @@
         context.lineWidth = radius * 2;
         context.stroke();
     }
+    
+    //-----------File Management
+    function saveCanvasImage() {
+        var id = (+(new Date)).toString(),
+            filename = 'image_' + id + '.png',
+            doc = {
+                _id: id,
+                _attachments: {}
+            };
+        
+        blobUtil.canvasToBlob(canvas).then(function (blob) {
+            doc._attachments[filename] = {
+                content_type: 'image/png',
+                data: blob
+            };
+            
+            db.put(doc).then(function() {
+                openImage(id, filename);
+            }).catch(function(err) {
+                console.log(err);
+            });
+        }).catch(function (err) {
+            console.log(err);
+        });
+        
+        log('new doc id: ' + doc._id);
+    }
+
+    function openImage(id, filename) {
+        db.get(id, {attachments: true}).then(function(doc) {
+            var dataBase64 = doc._attachments[filename].data;
+            //log('Data: ' + dataBase64);
+            
+            window.open('data:image/png;base64,' + dataBase64, filename);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+    
+    function log(msg) {
+        if (debug) {
+            console.log(msg);
+        }
+    }
 
 })().init();
-
-// Notes:
-// PouchDB for cross browser persistence with ability to sync to server
-//   http://pouchdb.com/getting-started.html
-//   http://pouchdb.com/api.html#save_attachment
 
 // TODO:
 //   Set content scalable meta for mobile
