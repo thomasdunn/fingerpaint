@@ -31,6 +31,8 @@
         canvas.height = window.innerHeight;
 
         context.lineCap = context.lineJoin = 'round';
+
+        clearDrawing();
     }
     
     function initTouch() {
@@ -172,6 +174,12 @@
         context.lineTo(x2, y2);
         context.lineWidth = radius * 2;
         context.stroke();
+    }
+    
+    function clearDrawing() {
+        context.fillStyle = "#fff";
+        context.rect(0, 0, canvas.width, canvas.height);
+        context.fill();
     }
     
     //-----------File Management
