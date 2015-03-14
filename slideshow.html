@@ -12,18 +12,27 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="bower_components/blueimp-gallery/css/blueimp-gallery.min.css">
   <link rel="stylesheet" href="bower_components/blueimp-bootstrap-image-gallery/css/bootstrap-image-gallery.min.css">
-
+  <style type="text/css">
+    /* HACK until can figure out what's causing display: none here */
+    .blueimp-gallery-single > .prev,
+    .blueimp-gallery-left > .prev,
+    .blueimp-gallery-single > .next,
+    .blueimp-gallery-right > .next,
+    .blueimp-gallery-single > .play-pause {
+        display: block;
+    }
+    
+    /* HACK because PNGs are transparent and we show white background in fingerpaint */
+    img.slide-content {
+        background: white;
+    }
+  </style>
   <script src="bower_components/fastclick/lib/fastclick.js"></script>
 </head>
 
 <body>
-    <!--<a href="data:text/plain;base64,TXkgbmFtZSBpcyBUb20gRHVubi4=">Test link</a>-->
     <div class="container">
         <div id="links">
-            <a href="https://farm8.static.flickr.com/7285/16179339134_93e1246ddf_b.jpg" title="Ode to Spring" data-gallery></a>
-            <a href="https://farm8.static.flickr.com/7626/16799400752_c17b618017_b.jpg" title="Frosty Burnham Beeches" data-gallery></a>
-            <a href="https://farm9.static.flickr.com/8584/16180633543_79fff770b8_b.jpg" title="Colors Of Bandon" data-gallery></a>
-            <a href="https://farm8.static.flickr.com/7613/16776569466_7e43ab6572_b.jpg" title="A peek into the upcoming Elgin Park book" data-gallery></a>
         </div>
     </div>
     <!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->

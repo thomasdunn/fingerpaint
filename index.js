@@ -32,7 +32,7 @@
 
         context.lineCap = context.lineJoin = 'round';
 
-        clearDrawing();
+        // clearDrawing();
     }
     
     function initTouch() {
@@ -152,6 +152,9 @@
         $('#save').on('click', function() {
            saveCanvasImage();
         });
+        $('#slideshow').on('click', function() {
+           openSlideshow();
+        });
     }
     
     //-----------Drawing functions 
@@ -197,8 +200,13 @@
                 data: blob
             };
             
+            // Cannot open the window from inside the promise
+            var openedWindow = window.open('', 'fingerpaint-slideshow');
+            
             db.put(doc).then(function() {
-                openImage(id, filename);
+                // openImage(id, filename);
+                // openSlideshow();
+                openedWindow.location = 'slideshow.html';
             }).catch(function(err) {
                 console.log(err);
             });
@@ -218,6 +226,10 @@
         }).catch(function (err) {
             console.log(err);
         });
+    }
+    
+    function openSlideshow() {
+        window.open('slideshow.html', 'fingerpaint-slideshow');
     }
     
     function log(msg) {

@@ -13,13 +13,44 @@
         PouchDB.debug.enable('*');
         
         initTouch();
+        initImages();
+    }
+    
+    function initImages() {
+        var links = $('#links'),
+            imageBase64Data;
 
+        db.allDocs({
+          include_docs: true, 
+          attachments: true,
+          descending: true
+        }).then(function (result) {
+          result.rows.forEach(function(row) {
+            for (var filename in row.doc._attachments) {
+                imageBase64Data = row.doc._attachments[filename].data;
+
+                links.append(
+                    $('<a></a>')
+                        .attr('data-gallery', '')
+                        .attr('href', 'data:image/png;base64,' + imageBase64Data)
+                );
+            }
+            
+            initSlideshow();
+          });
+        }).catch(function (err) {
+          console.log(err);
+        });
+    }
+    
+    function initSlideshow() {
         blueimp.Gallery($('#links a'), {
-            closeOnSwipeUpOrDown: false,
+            closeOnSwipeUpOrDown: true,
             closeOnSlideClick: false,
             closeOnEscape: false,
-            fullScreen: true,
-            useBootstrapModal: false
+            fullScreen: false,
+            useBootstrapModal: false,
+            onclose: function() { window.close(); }
         });
     }
     
@@ -55,6 +86,3 @@
     }
 
 })().init();
-
-// TODO:
-//   Set content scalable meta for mobile
