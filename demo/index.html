@@ -8,12 +8,17 @@
 
   <title>Fingerpaint</title>
   
-  <link href="style.css" rel="stylesheet" type="text/css">
+  <link href="bower_components/pure/pure.css" rel="stylesheet">
+  <link href="bower_components/components-font-awesome/css/font-awesome.css" rel="stylesheet">
   <link href="spectrum.css" rel="stylesheet" type="text/css">
+  <link href="style.css" rel="stylesheet" type="text/css">
+  
   <script src="bower_components/fastclick/lib/fastclick.js"></script>
   <script src="bower_components/hammer.js/hammer.js"></script>
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/spectrum/spectrum.js"></script>
+  <script src="bower_components/pouchdb/dist/pouchdb.min.js"></script>
+  <script src="bower_components/blob-util/dist/blob-util.js"></script>
 </head>
 
 <body>
@@ -28,6 +33,14 @@
       <div class="brush" data-radius="60"><div class="brush-6"></div></div>
       <div class="brush" data-radius="120"><div class="brush-7"></div></div>
       <div class="brush" data-radius="240"><div class="brush-8"></div></div>
+    </div>
+    <div id="actions">
+      <a id="save" class="button-secondary button-xlarge pure-button" href="#">
+        <i class="fa fa-lg fa-camera"></i>
+      </a>
+      <a id="slideshow" class="button-secondary button-xlarge pure-button" href="#">
+        <i class="fa fa-lg fa-archive"></i>
+      </a>
     </div>
   </div>
   <canvas id="canvas"></canvas>
