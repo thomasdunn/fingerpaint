@@ -6,5 +6,4 @@ import NavbarCtrl from '../components/navbar/navbar.controller';
 
 angular.module('fingerpaint', ['ngAnimate'])
   .controller('MainCtrl', MainCtrl)
-  .controller('NavbarCtrl', NavbarCtrl)
-  ;
+  .controller('NavbarCtrl', NavbarCtrl);
