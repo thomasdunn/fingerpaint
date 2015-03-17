@@ -20,7 +20,7 @@ body{
   left: 0;
   top: 0;
   width: 350px;
-  height: 555px;
+  height: 570px;
   background: #ECECEC;
   -moz-border-bottom-right-radius: 25px;
 	-webkit-border-bottom-right-radius: 25px;
@@ -35,6 +35,7 @@ body{
 }
 
 .brush {
+  box-sizing: content-box;
   width: 61px;
   height: 61px;
   padding-right: 9px;
@@ -147,7 +148,12 @@ div.brush:nth-child(5n) {
   position: absolute;
   margin-top: 495px;
   padding-left: 31px;
-  margin-left: 62px;
+  margin-left: 64px;
+  
+  a {
+    color: white;
+    font-size: 20px;
+  }
 }
 
 #save {
@@ -157,43 +163,4 @@ div.brush:nth-child(5n) {
 #slideshow {
   margin-left: 20px;
   background: rgb(66, 184, 221);
-}
-
-/* pure */
-
-.button-success,
-.button-error,
-.button-warning,
-.button-secondary {
-  color: white;
-  border-radius: 4px;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.button-success {
-  background: rgb(28, 184, 65); /* this is a green */
-}
-
-.button-error {
-  background: rgb(202, 60, 60); /* this is a maroon */
-}
-
-.button-warning {
-  background: rgb(223, 117, 20); /* this is an orange */
-}
-
-.button-xsmall {
-  font-size: 70%;
-}
-
-.button-small {
-  font-size: 85%;
-}
-
-.button-large {
-  font-size: 110%;
-}
-
-.button-xlarge {
-  font-size: 125%;
 }

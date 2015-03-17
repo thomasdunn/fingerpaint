@@ -1,8 +1,9 @@
-/* global PouchDB, FastClick, blueimp */
+/* global $, window, document, PouchDB, FastClick, blueimp */
+
+'use strict';
 
 (function() {
     var db = new PouchDB('fingerpaint'),
-        debug = false,
         app = {
             'init': init
         };
@@ -21,6 +22,7 @@
             imageBase64Data;
 
         db.allDocs({
+          /*jshint camelcase: false */
           include_docs: true, 
           attachments: true,
           descending: true
@@ -70,19 +72,14 @@
         });
     }
 
-    // return base64 encoded image data from attachment filename from doc with id
-    function getImageData(id, filename) {
-        db.get(id, {attachments: true}).then(function(doc) {
-            return doc._attachments[filename].data;
-        }).catch(function (err) {
-            console.log(err);
-        });
-    }
+    // // return base64 encoded image data from attachment filename from doc with id
+    // function getImageData(id, filename) {
+    //     db.get(id, {attachments: true}).then(function(doc) {
+    //         return doc._attachments[filename].data;
+    //     }).catch(function (err) {
+    //         console.log(err);
+    //     });
+    // }
     
-    function log(msg) {
-        if (debug) {
-            console.log(msg);
-        }
-    }
 
 })().init();

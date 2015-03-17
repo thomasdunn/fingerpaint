@@ -1,9 +1,9 @@
 'use strict';
 /*jshint esnext: true */
-/* global Hammer, FastClick, PouchDB, blobUtil */
+/* global $, Hammer, FastClick, PouchDB, blobUtil */
 
 class MainCtrl {
-  constructor ($scope) {
+  constructor ($scope, $window, $document) {
 
     var canvas,
         context,
@@ -25,15 +25,13 @@ class MainCtrl {
     }
     
     function initCanvas() {
-        canvas = document.getElementById('canvas');
+        canvas = $document[0].getElementById('canvas');
         context = canvas.getContext('2d');
         
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width  = $window.innerWidth;
+        canvas.height = $window.innerHeight;
 
         context.lineCap = context.lineJoin = 'round';
-
-        // clearDrawing();
     }
     
     function initTouch() {
@@ -55,7 +53,7 @@ class MainCtrl {
             
             e.preventDefault();
 
-        	e.pointers.forEach(function(pointer, index) {
+        	e.pointers.forEach(function(pointer) {
                 if (e.type === 'panend') {
                     drawCircle(pointer.pageX, pointer.pageY);
                     pointerPositions[pointer.identifier] = undefined;
@@ -68,7 +66,7 @@ class MainCtrl {
             
             e.preventDefault();
 
-        	e.pointers.forEach(function(pointer, index) {
+        	e.pointers.forEach(function(pointer) {
                 var pos = pointerPositions[pointer.identifier];
         	    if (pos === undefined) {
         	        pos = {
@@ -103,7 +101,7 @@ class MainCtrl {
         });
         
         // disable context menu, often would appear after accidental 2nd finger touch
-        window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
+        $window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
           e.preventDefault();
         }, false);
     
@@ -113,7 +111,7 @@ class MainCtrl {
     
         // This library is to remove the 300ms touch browser click delay
         $(function() {
-          FastClick.attach(document.body);
+          FastClick.attach($document[0].body);
         });
     }
     
@@ -180,11 +178,11 @@ class MainCtrl {
         context.stroke();
     }
     
-    function clearDrawing() {
-        context.fillStyle = '#fff';
-        context.rect(0, 0, canvas.width, canvas.height);
-        context.fill();
-    }
+    // function clearDrawing() {
+    //     context.fillStyle = '#fff';
+    //     context.rect(0, 0, canvas.width, canvas.height);
+    //     context.fill();
+    // }
     
     //-----------File Management
     function saveCanvasImage() {
@@ -204,7 +202,7 @@ class MainCtrl {
             };
             
             // Cannot open the window from inside the promise
-            var openedWindow = window.open('', 'fingerpaint-slideshow');
+            var openedWindow = $window.open('', 'fingerpaint-slideshow');
             
             db.put(doc).then(function() {
                 // openImage(id, filename);
@@ -220,19 +218,19 @@ class MainCtrl {
         log('new doc id: ' + doc._id);
     }
 
-    function openImage(id, filename) {
-        db.get(id, {attachments: true}).then(function(doc) {
-            var dataBase64 = doc._attachments[filename].data;
-            //log('Data: ' + dataBase64);
+    // function openImage(id, filename) {
+    //     db.get(id, {attachments: true}).then(function(doc) {
+    //         var dataBase64 = doc._attachments[filename].data;
+    //         //log('Data: ' + dataBase64);
             
-            window.open('data:image/png;base64,' + dataBase64, filename);
-        }).catch(function (err) {
-            console.log(err);
-        });
-    }
+    //         $window.open('data:image/png;base64,' + dataBase64, filename);
+    //     }).catch(function (err) {
+    //         console.log(err);
+    //     });
+    // }
     
     function openSlideshow() {
-        window.open('slideshow.html', 'fingerpaint-slideshow');
+        $window.open('slideshow.html', 'fingerpaint-slideshow');
     }
     
     function log(msg) {
@@ -246,6 +244,6 @@ class MainCtrl {
   }
 }
 
-MainCtrl.$inject = ['$scope'];
+MainCtrl.$inject = ['$scope', '$window', '$document'];
 
 export default MainCtrl;
