@@ -4,7 +4,7 @@
 
 class MainCtrl {
   constructor ($scope, $window, $document) {
-
+$scope.date = new Date();
     var canvas,
         context,
         radius = 15,
@@ -102,7 +102,7 @@ class MainCtrl {
         
         // disable context menu, often would appear after accidental 2nd finger touch
         $window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
-          e.preventDefault();
+//          e.preventDefault();
         }, false);
     
         // Chrome: to disable right-swipe back browser, left-swipe forward browser
