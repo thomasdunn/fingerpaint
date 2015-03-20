@@ -1,10 +1,8 @@
 <div id="brushes">
-  <div class="brush" data-radius="1" role="button"><div class="brush-1" role="button"></div></div>
-  <div class="brush" data-radius="3" role="button"><div class="brush-2" role="button"></div></div>
-  <div class="brush" data-radius="9" role="button"><div class="brush-3" role="button"></div></div>
-  <div class="brush selected" data-radius="15" role="button"><div class="brush-4" role="button"></div></div>
-  <div class="brush" data-radius="30" role="button"><div class="brush-5" role="button"></div></div>
-  <div class="brush" data-radius="60" role="button"><div class="brush-6" role="button"></div></div>
-  <div class="brush" data-radius="120" role="button"><div class="brush-7" role="button"></div></div>
-  <div class="brush" data-radius="240" role="button"><div class="brush-8" role="button"></div></div>
+  <div ng-repeat="brush in vm.brushes"
+       ng-class="{'brush': true, 'selected': brush.selected}"
+       ng-click="vm.selectBrush(brush)"
+       role="button">
+    <div class="brush-{{$index+1}}" role="button"></div>
+  </div>
 </div>

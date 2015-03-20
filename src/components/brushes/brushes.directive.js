@@ -1,7 +1,7 @@
 'use strict';
 /*jshint esnext: true */
 
-import BrushesController from '../components/brushes/brushes.controller';
+import BrushesController from './brushes.controller';
 
 function fingerpaintBrushes() {
 	var directive = {
@@ -16,7 +16,7 @@ function fingerpaintBrushes() {
 
 	return directive;
 
-	function linkFunction(scope, element, attrs, vm) {
+	function linkFunction(/* scope, element, attrs, vm */) {
 
 
 	}

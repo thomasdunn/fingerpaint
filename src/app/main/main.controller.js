@@ -3,11 +3,10 @@
 /* global $, Hammer, FastClick, PouchDB, blobUtil */
 
 class MainCtrl {
-  constructor ($scope, $window, $document) {
-$scope.date = new Date();
+  constructor ($scope, $window, $document, toolsService) {
+
     var canvas,
         context,
-        radius = 15,
         pointerPositions = [],
         db = new PouchDB('fingerpaint'),
         debug = false;
@@ -15,9 +14,9 @@ $scope.date = new Date();
     activate();
 
     function activate() {
+
         initCanvas();
         initTouch();
-        initBrushPicker();
         initColorPicker();
         initActions();
         
@@ -102,7 +101,9 @@ $scope.date = new Date();
         
         // disable context menu, often would appear after accidental 2nd finger touch
         $window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
+// TODO put back in
 //          e.preventDefault();
+            console.log(e);
         }, false);
     
         // Chrome: to disable right-swipe back browser, left-swipe forward browser
@@ -112,15 +113,6 @@ $scope.date = new Date();
         // This library is to remove the 300ms touch browser click delay
         $(function() {
           FastClick.attach($document[0].body);
-        });
-    }
-    
-    function initBrushPicker() {
-        $('.brush').on('click', function() {
-            radius = $(this).data('radius');
-            log('Brush size: ' + radius);
-            $('.brush').removeClass('selected');
-            $(this).addClass('selected');
         });
     }
     
@@ -166,7 +158,7 @@ $scope.date = new Date();
     
     function drawCircle(x, y) {
         context.beginPath();
-        context.arc(x, y, radius, 0, 2 * Math.PI, false);
+        context.arc(x, y, toolsService.brushRadius, 0, 2 * Math.PI, false);
         context.fill(); 
     }
     
@@ -174,7 +166,7 @@ $scope.date = new Date();
         context.beginPath();
         context.moveTo(x1, y1);
         context.lineTo(x2, y2);
-        context.lineWidth = radius * 2;
+        context.lineWidth = toolsService.brushRadius * 2;
         context.stroke();
     }
     
@@ -244,6 +236,6 @@ $scope.date = new Date();
   }
 }
 
-MainCtrl.$inject = ['$scope', '$window', '$document'];
+MainCtrl.$inject = ['$scope', '$window', '$document', 'toolsService'];
 
 export default MainCtrl;
