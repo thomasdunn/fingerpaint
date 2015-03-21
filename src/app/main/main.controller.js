@@ -1,108 +1,20 @@
 'use strict';
 /*jshint esnext: true */
-/* global $, Hammer, FastClick, PouchDB, blobUtil */
+/* global $, FastClick, PouchDB, blobUtil */
 
 class MainCtrl {
-  constructor ($scope, $window, $document, toolsService) {
+  constructor ($scope, $window, $document) {
 
-    var canvas,
-        context,
-        pointerPositions = [],
-        db = new PouchDB('fingerpaint'),
+    var db = new PouchDB('fingerpaint'),
         debug = false;
         
     activate();
 
     function activate() {
 
-        toolsService.onPaintColorsSet(
-            $scope,
-            color => context.fillStyle = 
-                      context.strokeStyle = color 
-        );
-
-        initCanvas();
-        initTouch();
         initActions();
         
         PouchDB.debug.enable('*');
-    }
-    
-    function initCanvas() {
-        canvas = $document[0].getElementById('canvas');
-        context = canvas.getContext('2d');
-        
-        canvas.width  = $window.innerWidth;
-        canvas.height = $window.innerHeight;
-
-        context.lineCap = context.lineJoin = 'round';
-    }
-    
-    function initTouch() {
-        var mc = new Hammer(canvas, { });
-
-        mc.on('tap', function(e) {
-            log('event type: ' + e.type);
-            
-            // prevent the source event from doing it's native behavior
-            e.preventDefault();
-
-        	e.pointers.forEach(function(pointer) {
-        	    drawCircle(pointer.pageX, pointer.pageY);
-        	});
-        });
-        
-        mc.on('panstart panend', function(e) {
-            log('event type: ' + e.type);
-            
-            e.preventDefault();
-
-        	e.pointers.forEach(function(pointer) {
-                if (e.type === 'panend') {
-                    drawCircle(pointer.pageX, pointer.pageY);
-                    pointerPositions[pointer.identifier] = undefined;
-                }
-        	});
-        });
-
-        mc.on('panleft panright panup pandown', function(e) {
-            log('event type: ' + e.type);
-            
-            e.preventDefault();
-
-        	e.pointers.forEach(function(pointer) {
-                var pos = pointerPositions[pointer.identifier];
-        	    if (pos === undefined) {
-        	        pos = {
-        	            lastX: pointer.pageX,
-            	        lastY: pointer.pageY
-        	        };
-        	        pointerPositions[pointer.identifier] = pos;
-        	    }
-        	    
-        	    drawLine(pos.lastX, pos.lastY, pointer.pageX, pointer.pageY);
-        	    
-                pos.lastX = pointer.pageX;
-                pos.lastY = pointer.pageY;
-        	});
-        });
-        
-        mc.get('pan').set({
-            // enable vertical pan
-            // blocks the vertical scrolling on a touch-device while on the element
-            direction: Hammer.DIRECTION_ALL,
-            // make it respond to drag and start drawing immediately
-            threshold: 0,
-            // all your fingers!
-            pointers: 0
-        });
-    
-        mc.get('tap').set({
-            // allow this many pixel movement during gesture
-            threshold: 10,
-            // allow consecutive taps to be very far apart
-            posThreshold: 19200
-        });
         
         // disable context menu, often would appear after accidental 2nd finger touch
         $window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
@@ -130,27 +42,6 @@ class MainCtrl {
         });
     }
     
-    //-----------Drawing functions 
-    
-    function drawCircle(x, y) {
-        context.beginPath();
-        context.arc(x, y, toolsService.brushRadius, 0, 2 * Math.PI, false);
-        context.fill(); 
-    }
-    
-    function drawLine(x1, y1, x2, y2) {
-        context.beginPath();
-        context.moveTo(x1, y1);
-        context.lineTo(x2, y2);
-        context.lineWidth = toolsService.brushRadius * 2;
-        context.stroke();
-    }
-    
-    // function clearDrawing() {
-    //     context.fillStyle = '#fff';
-    //     context.rect(0, 0, canvas.width, canvas.height);
-    //     context.fill();
-    // }
     
     //-----------File Management
     function saveCanvasImage() {
@@ -161,6 +52,7 @@ class MainCtrl {
                 _attachments: {}
             };
         
+        // TODO - refactor canvas image retrieval into a service
         blobUtil.canvasToBlob(canvas).then(function (blob) {
             doc._attachments[filename] = {
                 /*jshint camelcase: false */
@@ -212,6 +104,6 @@ class MainCtrl {
   }
 }
 
-MainCtrl.$inject = ['$scope', '$window', '$document', 'toolsService'];
+MainCtrl.$inject = ['$scope', '$window', '$document'];
 
 export default MainCtrl;
