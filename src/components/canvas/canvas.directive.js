@@ -4,7 +4,7 @@
 
 import CanvasController from './canvas.controller';
 
-function fingerpaintCanvas($window, toolsService) {
+function fingerpaintCanvas($window, toolsService, canvasService) {
 	var directive = {
 			restrict: 'EA',
 			scope: true,
@@ -19,11 +19,13 @@ function fingerpaintCanvas($window, toolsService) {
 
 	function linkFunction(scope, element, attrs, vm) {
 
+		var canvas = element[0];
+		canvasService.canvas = canvas;
+
 		initCanvas();
 		initTouch();
 
 		function initCanvas() {
-	        var canvas = element[0];
 	        vm.context = canvas.getContext('2d');
 	        
 	        canvas.width = vm.width = $window.innerWidth;
@@ -33,7 +35,7 @@ function fingerpaintCanvas($window, toolsService) {
 	    }
 	    
 	    function initTouch() {
-	        var mc = new Hammer(element[0], { });
+	        var mc = new Hammer(canvas, { });
 	
 	        mc.on('tap', function(e) {
 	            console.log('event type: ' + e.type);
@@ -123,6 +125,6 @@ function fingerpaintCanvas($window, toolsService) {
 	}
 }
 
-fingerpaintCanvas.$inject = ['$window', 'toolsService'];
+fingerpaintCanvas.$inject = ['$window', 'toolsService', 'canvasService'];
 
 export default fingerpaintCanvas;

@@ -7,8 +7,10 @@ import BrushesController from '../components/brushes/brushes.controller';
 import fingerpaintBrushes from '../components/brushes/brushes.directive';
 import CanvasController from '../components/canvas/canvas.controller';
 import fingerpaintCanvas from '../components/canvas/canvas.directive';
+import CanvasService from '../components/canvas/canvas.service';
 import fingerpaintColors from '../components/colors/colors.directive';
 import ToolsService from '../components/tools/tools.service';
+import StorageService from '../components/storage/storage.service';
 
 angular.module('fingerpaint', ['ngAnimate'])
   .controller('MainCtrl', MainCtrl)
@@ -18,4 +20,6 @@ angular.module('fingerpaint', ['ngAnimate'])
   .directive('fingerpaintBrushes', fingerpaintBrushes)
   .directive('fingerpaintColors', fingerpaintColors)
   .directive('fingerpaintCanvas', fingerpaintCanvas)
-  .service('toolsService', ToolsService);
+  .service('canvasService', CanvasService)
+  .service('toolsService', ToolsService)
+  .service('storageService', StorageService);
