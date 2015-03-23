@@ -1,0 +1,13 @@
+/* HACK until can figure out what's causing display: none here */
+.blueimp-gallery-single > .prev,
+.blueimp-gallery-left > .prev,
+.blueimp-gallery-single > .next,
+.blueimp-gallery-right > .next,
+.blueimp-gallery-single > .play-pause {
+    display: block;
+}
+
+/* HACK because PNGs are transparent and we show white background in fingerpaint */
+img.slide-content {
+    background: white;
+}

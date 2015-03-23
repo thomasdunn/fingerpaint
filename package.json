@@ -1,7 +1,9 @@
 {
   "name": "fingerpaint",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "angular-new-router": "^0.5.0"
+  },
   "devDependencies": {
     "browser-sync": "~1.7.1",
     "chalk": "~0.5.1",

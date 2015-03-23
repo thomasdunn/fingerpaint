@@ -1,27 +1,24 @@
-/* global $, window, document, PouchDB, FastClick, blueimp */
-
 'use strict';
+/*jshint esnext: true */
+/* global $, PouchDB, blueimp */
 
-(function() {
-    var db = new PouchDB('fingerpaint'),
-        app = {
-            'init': init
-        };
-
-    return app;
-    
-    function init() {
+class SlideshowController {
+    constructor($window, storageService) {
+        this.$window = $window;
+        
+        this.db = new PouchDB('fingerpaint');
         PouchDB.debug.enable('*');
         
-        initTouch();
-        initImages();
+        this.initTouch();
+        this.initImages();
     }
     
-    function initImages() {
+    initImages() {
         var links = $('#links'),
-            imageBase64Data;
+            imageBase64Data,
+            self = this;
 
-        db.allDocs({
+        this.db.allDocs({
           /*jshint camelcase: false */
           include_docs: true, 
           attachments: true,
@@ -38,27 +35,27 @@
                 );
             }
             
-            initSlideshow();
+            self.initSlideshow();
           });
         }).catch(function (err) {
           console.log(err);
         });
     }
     
-    function initSlideshow() {
+    initSlideshow() {
         blueimp.Gallery($('#links a'), {
             closeOnSwipeUpOrDown: true,
             closeOnSlideClick: false,
             closeOnEscape: false,
             fullScreen: false,
             useBootstrapModal: false,
-            onclose: function() { window.close(); }
+            onclose: function() { /* TODO : switch to 'paint' view */ }
         });
     }
     
-    function initTouch() {
+    initTouch() {
         // disable context menu, often would appear after accidental 2nd finger touch
-        window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
+        this.$window.addEventListener('contextmenu', function (e) { // Not compatibile with IE < 9 but neither is canvas
           e.preventDefault();
         }, false);
     
@@ -66,20 +63,23 @@
         // set overscroll-history-navigation=disabled
         // chrome://flags/#overscroll-history-navigation
     
-        // This library is to remove the 300ms touch browser click delay
-        $(function() {
-          FastClick.attach(document.body);
-        });
+        // Already done in 'paint' component
+        // // This library is to remove the 300ms touch browser click delay
+        // $(function() {
+        //   FastClick.attach(document.body);
+        // });
     }
 
     // // return base64 encoded image data from attachment filename from doc with id
-    // function getImageData(id, filename) {
-    //     db.get(id, {attachments: true}).then(function(doc) {
+    // getImageData(id, filename) {
+    //     this.db.get(id, {attachments: true}).then(function(doc) {
     //         return doc._attachments[filename].data;
     //     }).catch(function (err) {
     //         console.log(err);
     //     });
     // }
-    
+}
 
-})().init();
+SlideshowController.$inject = ['$window', '$document', 'canvasService', 'storageService'];
+
+export default SlideshowController;

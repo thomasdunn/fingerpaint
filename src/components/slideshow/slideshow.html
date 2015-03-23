@@ -1,36 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-us">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="viewport" content="user-scalable=no">
-
-  <title>Fingerpaint Slideshow</title>
-  
-  <!--<link href="style.css" rel="stylesheet" type="text/css">-->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="bower_components/blueimp-gallery/css/blueimp-gallery.min.css">
-  <link rel="stylesheet" href="bower_components/blueimp-bootstrap-image-gallery/css/bootstrap-image-gallery.min.css">
-  <style type="text/css">
-    /* HACK until can figure out what's causing display: none here */
-    .blueimp-gallery-single > .prev,
-    .blueimp-gallery-left > .prev,
-    .blueimp-gallery-single > .next,
-    .blueimp-gallery-right > .next,
-    .blueimp-gallery-single > .play-pause {
-        display: block;
-    }
-    
-    /* HACK because PNGs are transparent and we show white background in fingerpaint */
-    img.slide-content {
-        background: white;
-    }
-  </style>
-  <script src="bower_components/fastclick/lib/fastclick.js"></script>
-</head>
-
-<body>
+<div>
     <div class="container">
         <div id="links">
         </div>
@@ -69,10 +37,4 @@
             </div>
         </div>
     </div>
-    <script src="bower_components/pouchdb/dist/pouchdb.min.js"></script>
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/blueimp-gallery/js/jquery.blueimp-gallery.min.js"></script>
-    <script src="bower_components/blueimp-bootstrap-image-gallery/js/bootstrap-image-gallery.min.js"></script>
-    <script src="slideshow.js"></script>
-</body>
-</html>
+</div>

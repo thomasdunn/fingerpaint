@@ -2,8 +2,8 @@
 /*jshint esnext: true */
 /* global $, FastClick */
 
-class MainCtrl {
-    constructor($scope, $window, $document, canvasService, storageService) {
+class PaintController {
+    constructor($window, $document, canvasService, storageService) {
 
         this.$window = $window;
         this.canvasService = canvasService;
@@ -24,18 +24,15 @@ class MainCtrl {
         $(function() {
             FastClick.attach($document[0].body);
         });
-
     }
 
-    //-----------File Management
     saveCanvasImage() {
         this.canvasService.getImageBlob().then(blob => {
             this.storageService.saveBlob(blob).then(() => {
-            // TODO : open slideshow
-            // // Cannot open the window from inside the promise
-            // openSlideshow
-            console.log('Saved.  Open slideshow...');
-
+                // TODO : open slideshow
+                // navigate router to 'show' component
+                console.log('Saved.  Open slideshow...');
+    
             }).catch(function(err) {
                 console.log(err);
             });
@@ -43,12 +40,8 @@ class MainCtrl {
             console.log(err);
         });
     }
-
-    openSlideshow() {
-        this.$window.open('slideshow.html', 'fingerpaint-slideshow');
-    }
 }
 
-MainCtrl.$inject = ['$scope', '$window', '$document', 'canvasService', 'storageService'];
+PaintController.$inject = ['$window', '$document', 'canvasService', 'storageService'];
 
-export default MainCtrl;
+export default PaintController;

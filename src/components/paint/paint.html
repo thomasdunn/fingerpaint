@@ -1,0 +1,16 @@
+<div class="container-fluid">
+  <div id="controls">
+    <fingerpaint-colors></fingerpaint-colors>
+    <fingerpaint-brushes></fingerpaint-brushes>
+    <div id="actions">
+      <a id="save" class="btn btn-lg" href="#" role="button" ng-click="paint.saveCanvasImage()">
+        <i class="fa fa-lg fa-camera"></i>
+      </a>
+      <a id="slideshow" class="btn btn-lg" role="button" ng-link="show()">
+        <i class="fa fa-lg fa-archive"></i>
+      </a>
+    </div>
+  </div>
+  <fingerpaint-canvas></fingerpaint-canvas>
+</div>
+ <a ng-link="detail({id: 5})">link to detail</a>

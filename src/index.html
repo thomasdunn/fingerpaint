@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" ng-app="fingerpaint">
+<html class="no-js">
   <head>
     <meta charset="utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -23,30 +23,13 @@
     <!-- endinject -->
     <!-- endbuild -->
   </head>
-  <body>
+  <body ng-app="fingerpaint" ng-controller="AppController as app">
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="container-fluid" ng-controller="MainCtrl as vm">
-    
-      <!--div ng-include="'components/navbar/navbar.html'"></div-->
-    
-      <div id="controls">
-        <fingerpaint-colors></fingerpaint-colors>
-        <fingerpaint-brushes></fingerpaint-brushes>
-        <div id="actions">
-          <a id="save" class="btn btn-lg" href="#" role="button" ng-click="vm.saveCanvasImage()">
-            <i class="fa fa-lg fa-camera"></i>
-          </a>
-          <a id="slideshow" class="btn btn-lg" href="#" role="button" ng-click="vm.openSlideshow()">
-            <i class="fa fa-lg fa-archive"></i>
-          </a>
-        </div>
-      </div>
-      <fingerpaint-canvas></fingerpaint-canvas>
-    </div>
-    
+    <div ng-viewport></div>>
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <!--script>
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
@@ -72,6 +55,9 @@
     <!-- angular templates will be automatically converted in js and inserted here -->
     <!-- endinject -->
     <!-- endbuild -->
+    
+    <!-- TODO : once this can be properly installed via bower get rid of this and leave for auto injection -->
+    <script type="text/javascript" src="assets/lib/router.es5.js"></script>
 
   </body>
 </html>
