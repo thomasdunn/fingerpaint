@@ -4,6 +4,7 @@
     var canvas,
         context,
         radius = 15,
+        maxAllowedMovement = 50,
         pointerPositions = [],
         db = new PouchDB('fingerpaint'),
         debug = false,
@@ -68,7 +69,9 @@
             e.preventDefault();
 
         	e.pointers.forEach(function(pointer, index) {
-                var pos = pointerPositions[pointer.identifier];
+                var dx, dy,
+                    pos = pointerPositions[pointer.identifier];
+                    
         	    if (pos === undefined) {
         	        pos = {
         	            lastX: pointer.pageX,
@@ -77,11 +80,20 @@
         	        pointerPositions[pointer.identifier] = pos;
         	    }
         	    
-        	    drawLine(pos.lastX, pos.lastY, pointer.pageX, pointer.pageY);
-        	    
-                pos.lastX = pointer.pageX;
-                pos.lastY = pointer.pageY;
-        	});
+                dx = Math.abs(pos.lastX - pointer.pageX);
+                dy = Math.abs(pos.lastY - pointer.pageY);
+                
+                // filter out any erratic jumps to top-left that often occur
+                // when using a pen and tablet
+                if ( !(dx > maxAllowedMovement && (pos.lastX <= 0 || pointer.pageX <= 0)) &&
+                     !(dy > maxAllowedMovement && (pos.lastY <= 0 || pointer.pageY <= 0))
+                ) {
+                    drawLine(pos.lastX, pos.lastY, pointer.pageX, pointer.pageY);
+                    
+                    pos.lastX = pointer.pageX;
+                    pos.lastY = pointer.pageY;
+                }
+            });
         });
         
         mc.get('pan').set({
