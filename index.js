@@ -152,7 +152,7 @@
     
     function initColorPicker() {
         $("#picker").spectrum({
-            change: changeColor,
+            move: changeColor,
             clickoutFiresChange: true, // keep selected color when change brush
             showPaletteOnly: true,
             showPalette:true,
