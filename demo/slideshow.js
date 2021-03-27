@@ -32,6 +32,7 @@
                 links.append(
                     $('<a></a>')
                         .attr('data-gallery', '')
+                        .attr('id', row.doc._id)
                         .attr('href', 'data:image/png;base64,' + imageBase64Data)
                 );
             }

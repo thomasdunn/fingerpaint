@@ -147,10 +147,15 @@ div.brush:nth-child(5n) {
   position: absolute;
   margin-top: 495px;
   padding-left: 31px;
-  margin-left: 62px;
+  margin-left: 20px;
+}
+
+#back {
+  background: red;
 }
 
 #save {
+  margin-left: 20px;
   background: orange;
 }
 

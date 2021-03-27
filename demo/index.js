@@ -4,7 +4,11 @@
     var canvas,
         context,
         radius = 15,
+        maxAllowedMovement = 50,
         pointerPositions = [],
+        history = [NaN, 0, 0, 0, 0, NaN, 1, 15], // set color black, radius = 15
+        undoing = false,
+        undone = false,
         db = new PouchDB('fingerpaint'),
         debug = false,
         app = {
@@ -22,6 +26,12 @@
         
         PouchDB.debug.enable('*');
     }
+    
+    // ops: color, brush size, circle, line
+    // brush size: s
+    // color: r, g, b
+    // circle: x, y
+    // line: x1, y1, x2, y2
     
     function initCanvas() {
         canvas = document.getElementById('canvas');
@@ -68,7 +78,9 @@
             e.preventDefault();
 
         	e.pointers.forEach(function(pointer, index) {
-                var pos = pointerPositions[pointer.identifier];
+                var dx, dy,
+                    pos = pointerPositions[pointer.identifier];
+                    
         	    if (pos === undefined) {
         	        pos = {
         	            lastX: pointer.pageX,
@@ -77,11 +89,20 @@
         	        pointerPositions[pointer.identifier] = pos;
         	    }
         	    
-        	    drawLine(pos.lastX, pos.lastY, pointer.pageX, pointer.pageY);
-        	    
-                pos.lastX = pointer.pageX;
-                pos.lastY = pointer.pageY;
-        	});
+                dx = Math.abs(pos.lastX - pointer.pageX);
+                dy = Math.abs(pos.lastY - pointer.pageY);
+                
+                // filter out any erratic jumps to top-left that often occur
+                // when using a pen and tablet
+                if ( !(dx > maxAllowedMovement && (pos.lastX <= 0 || pointer.pageX <= 0)) &&
+                     !(dy > maxAllowedMovement && (pos.lastY <= 0 || pointer.pageY <= 0))
+                ) {
+                    drawLine(pos.lastX, pos.lastY, pointer.pageX, pointer.pageY);
+                    
+                    pos.lastX = pointer.pageX;
+                    pos.lastY = pointer.pageY;
+                }
+            });
         });
         
         mc.get('pan').set({
@@ -122,12 +143,16 @@
             log('Brush size: ' + radius);
             $('.brush').removeClass('selected');
             $(this).addClass('selected');
+            
+            if (! undoing) {
+                history.push(NaN, 1, radius);
+            }
         });
     }
     
     function initColorPicker() {
         $("#picker").spectrum({
-            change: changeColor,
+            move: changeColor,
             clickoutFiresChange: true, // keep selected color when change brush
             showPaletteOnly: true,
             showPalette:true,
@@ -155,20 +180,101 @@
         $('#slideshow').on('click', function() {
            openSlideshow();
         });
+        $('#back').on('click', function() {
+           undo();
+        });
+    }
+    
+    function undo() {
+        var position,
+            operation,
+            end = history.length - 1,
+            foundLastOp = false;
+
+        undoing = true;
+        
+        while (end > 0) {
+            if (isNaN(history[end])) {
+                if (foundLastOp) {
+                    break;
+                }
+                else {
+                    foundLastOp = true;
+                }
+            }
+            end--;
+        }
+            
+        clearDrawing();
+        
+        for (position = 0; position <= end; ) {
+            operation = history[position + 1];
+            switch (operation) {
+                case 0:
+                    context.fillStyle = 
+                        context.strokeStyle =
+                            'rgb(' + history[position + 2] + ','
+                                   + history[position + 3] + ','
+                                   + history[position + 4] + ')';
+                    position = position + 5;
+                    break;
+                    
+                case 1:
+                    radius = history[position + 2];
+                    position = position + 3;
+                    break;
+
+                case 2:
+                    drawCircle(history[position + 2], history[position + 3]);
+                    position = position + 4;
+                    break;
+                    
+                case 3:
+                    drawLine(history[position + 2], history[position + 3],
+                        history[position + 4], history[position + 5]);
+                    position = position + 6;
+                    break;
+            }
+        }
+        
+        history = history.slice(0, position);
+        
+        undoing = false;
+        undone = true;
+        
+        $("#picker").spectrum("set", context.fillStyle);
+        $(".brush").removeClass("selected");
+        $(".brush[data-radius='" + radius + "']").addClass("selected");
     }
     
     //-----------Drawing functions 
     
     function changeColor(color) {
+        var colorComponents = color.toRgb();
+        
+        // TODO - fix temporary hack... after each undo, color picker fires for some reason
+        if (undone) {
+            undone = false;
+            return;
+        }
+        
         context.fillStyle = 
             context.strokeStyle = 
                 color.toHexString();
+                
+        if (! undoing) {
+            history.push(NaN, 0, colorComponents.r, colorComponents.g, colorComponents.b);
+        }
     }
     
     function drawCircle(x, y) {
         context.beginPath();
         context.arc(x, y, radius, 0, 2 * Math.PI, false);
         context.fill(); 
+        
+        if (! undoing) {
+            history.push(NaN, 2, x, y);
+        }
     }
     
     function drawLine(x1, y1, x2, y2) {
@@ -177,6 +283,10 @@
         context.lineTo(x2, y2);
         context.lineWidth = radius * 2;
         context.stroke();
+
+        if (! undoing) {
+            history.push(NaN, 3, x1, y1, x2, y2);
+        }
     }
     
     function clearDrawing() {
